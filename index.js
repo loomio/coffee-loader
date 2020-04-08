@@ -20,7 +20,10 @@ module.exports = function(source) {
 			sourceRoot: "",
 			sourceFiles: [coffeeRequest],
 			generatedFile: jsRequest,
-			transpile: query.transpile
+			transpile: {
+				presets: ['@babel/env'],
+				filename: coffeeRequest
+			}
 		});
 	} catch (e) {
 		var err = "";
