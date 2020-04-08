@@ -11,7 +11,7 @@ module.exports = function(source) {
 	var query = loaderUtils.getOptions(this) || {};
 	var result;
 	try {
-		result = coffee.compile(source, {
+    args = {
 			literate: query.literate,
 			filename: coffeeRequest,
 			debug: this.debug,
@@ -19,12 +19,15 @@ module.exports = function(source) {
 			sourceMap: true,
 			sourceRoot: "",
 			sourceFiles: [coffeeRequest],
-			generatedFile: jsRequest,
-			transpile: {
+			generatedFile: jsRequest
+		}
+    if (!process.env.VUE_CLI_MODERN_BUILD) {
+      args.transpile = {
 				presets: ['@babel/env'],
 				filename: coffeeRequest
 			}
-		});
+    }
+		result = coffee.compile(source, args)
 	} catch (e) {
 		var err = "";
 		if (e.location == null || e.location.first_column == null || e.location.first_line == null) {
